@@ -23,7 +23,7 @@ add_library(googleapis_internal STATIC
 ./util/hash.cc
 ./util/status.cc
 )
-target_link_libraries(googleapis_internal ${GLOG_LIBRARY})
+target_link_libraries(googleapis_internal glog::glog)
 install(TARGETS googleapis_internal DESTINATION ${GOOGLEAPIS_INSTALL_LIB_DIR})
 
 install(FILES 
