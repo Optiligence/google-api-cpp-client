@@ -169,7 +169,7 @@ TEST_F(FileUtilsTestFixture, TestValidatePermissions) {
   const string kLink = StrCat(GetTestingTempDir(), "/link");
   File::Delete(kLink);
   ASSERT_TRUE(util::IsNotFound(file::Exists(kLink, file::Defaults())));
-#ifndef _MSC_VER
+#ifndef _WIN32
   EXPECT_EQ(0, symlink(kPath.c_str(), kLink.c_str()));
 #else
   string windows_link_string;

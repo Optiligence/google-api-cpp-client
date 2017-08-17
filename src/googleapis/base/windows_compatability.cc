@@ -26,7 +26,7 @@
 // yet accomodated.
 //
 // Need to do a thorough scrubbing on TCHAR in the code.
-// And also the use of _MSC_VER is the appropriate guard in each
+// And also the use of _WIN32 is the appropriate guard in each
 // porting situation.
 
 #include "googleapis/base/windows_compatability.h"
@@ -43,7 +43,7 @@ namespace googleapis {
 
 using std::string;
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 
 string FromWindowsPath(const string& path) {
   return StringReplace(path, "\\", "/", true);
@@ -104,6 +104,6 @@ int base_port_MSVC_snprintf(char *str, size_t size, const char *format, ...) {
   return r;
 }
 
-#endif  // _MSC_VER
+#endif  // _WIN32
 
 }  // namespace googleapis

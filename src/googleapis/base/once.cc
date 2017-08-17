@@ -21,7 +21,7 @@
 
 namespace googleapis {
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 void GoogleOnceInit(GoogleOnceType* once, void (*initializer)()) {
   static Mutex mutex_(base::LINKER_INITIALIZED);
   MutexLock l(&mutex_);

@@ -145,7 +145,7 @@ if (HAVE_OPENSSL)
 # Concrete Codec implementation using OpenSSL (external package).
 add_library(googleapis_openssl_codec STATIC data/openssl_codec.cc)
 target_link_libraries(googleapis_openssl_codec crypto)
-target_link_libraries(googleapis_openssl_codec dl)      # For crypto
+#target_link_libraries(googleapis_openssl_codec dl)      # For crypto
 target_link_libraries(googleapis_openssl_codec googleapis_internal)
 target_link_libraries(googleapis_openssl_codec googleapis_utils)
 install(TARGETS googleapis_openssl_codec
@@ -163,7 +163,7 @@ target_link_libraries(googleapis_curl_http googleapis_internal)
 if (HAVE_OPENSSL)
 target_link_libraries(googleapis_curl_http ssl)
 target_link_libraries(googleapis_curl_http crypto)
-target_link_libraries(googleapis_curl_http dl)
+#target_link_libraries(googleapis_curl_http dl)
 endif()
 install(TARGETS googleapis_curl_http DESTINATION ${GOOGLEAPIS_INSTALL_LIB_DIR})
 install(FILES transport/curl_http_transport.h

@@ -115,7 +115,7 @@ class FileCredentialStore : public CredentialStore {
 // static
 util::Status FileCredentialStoreFactory::GetSystemHomeDirectoryStorePath(
     string* path) {
-#ifdef _MSC_VER
+#ifdef _WIN32
   const char kVariableName[] = "APPDATA";
   const char kDirPath[] = "googleapis/credentials";
 #else
@@ -130,7 +130,7 @@ util::Status FileCredentialStoreFactory::GetSystemHomeDirectoryStorePath(
     LOG(WARNING) << status.error_message();
     return status;
   }
-#ifdef _MSC_VER
+#ifdef _WIN32
   *path = JoinPath(FromWindowsPath(home), kDirPath);
 #else
   *path = JoinPath(home, kDirPath);

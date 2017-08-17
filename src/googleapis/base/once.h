@@ -19,14 +19,14 @@
 #ifndef GOOGLEAPIS_ONCE_H_  // NOLINT
 #define GOOGLEAPIS_ONCE_H_
 
-#ifndef _MSC_VER
+#ifndef _WIN32
 #include <pthread.h>
 #endif
 #include <glog/logging.h>
 #include "googleapis/base/port.h"
 namespace googleapis {
 
-#ifndef _MSC_VER
+#ifndef _WIN32
 
 typedef pthread_once_t GoogleOnceType;
 #define GOOGLE_ONCE_INIT PTHREAD_ONCE_INIT
