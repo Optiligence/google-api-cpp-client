@@ -30,6 +30,7 @@ using std::string;
 #include "googleapis/base/mutex.h"
 #include "googleapis/client/auth/credential_store.h"
 #include "googleapis/client/auth/oauth2_authorization.h"
+#include "googleapis/client/auth/oauth2_service_authorization.h"
 #include "googleapis/client/data/data_reader.h"
 #include "googleapis/client/transport/http_request.h"
 #include "googleapis/client/transport/http_response.h"
@@ -92,7 +93,7 @@ class OAuth2AuthorizationFlow::SimpleJsonData {
 
   bool GetFirstArrayElement(const char* field, string* value) const;
 
- private:
+ public:
   mutable Json::Value json_;
 };
 
@@ -113,7 +114,7 @@ string OAuth2AuthorizationFlow::SimpleJsonData::InitFromContainer(
     return "";
   }
   string name = json_.begin().key().asString();
-  json_ = *json_.begin();
+//  json_ = *json_.begin();// ←
   return name;
 }
 bool OAuth2AuthorizationFlow::SimpleJsonData::GetString(
@@ -713,10 +714,14 @@ OAuth2AuthorizationFlow::MakeFlowFromClientSecretsJson(
   std::unique_ptr<OAuth2AuthorizationFlow> flow;
 
   if (StringCaseEqual(root_name, "installed")) {
+    data.json_ = *data.json_.begin();
     flow.reset(
         new OAuth2InstalledApplicationFlow(transport_deleter.release()));
   } else if (StringCaseEqual(root_name, "web")) {
+    data.json_ = *data.json_.begin();
     flow.reset(new OAuth2WebApplicationFlow(transport_deleter.release()));
+  } else if (data.json_["type"] == "service_account") {
+      flow.reset(new OAuth2ServiceAccountFlow(transport_deleter.release()));
   } else {
     *status =
         StatusInvalidArgument(StrCat("Unhandled OAuth2 flow=", root_name));
