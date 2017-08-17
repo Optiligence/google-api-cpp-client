@@ -20,9 +20,10 @@
 #define GOOGLEAPIS_BASE_MUTEX_H_
 #define GOOGLEAPIS_MUTEX_H_
 
-#if defined(_MSC_VER)
+#if defined(_WIN32)
 #include "googleapis/base/windows_compatability.h"
 # include <condition_variable>  // NOLINT
+#include <Synchapi.h> // InitializeCriticalSection
 #else
 # include <errno.h>
 # include <pthread.h>
@@ -38,7 +39,7 @@ namespace googleapis {
 
 namespace base {
 
-#if !defined(_MSC_VER)
+#if !defined(_WIN32)
 class PThreadCondVar;
 class LOCKABLE PThreadMutex {
  public:
@@ -92,7 +93,7 @@ typedef PThreadMutex Mutex;
 class MsvcCondVar;
 class MsvcMutex {
  public:
-  explicit MsvcMutex(base::LinkerInitialized ignore) {
+  explicit MsvcMutex(base::LinkerInitialized) {
     InitializeCriticalSection(&mutex_);
   }
   MsvcMutex()   {

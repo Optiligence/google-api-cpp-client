@@ -18,7 +18,7 @@
  */
 
 
-#ifndef _MSC_VER
+#ifndef _WIN32
 #include <signal.h>
 #endif
 
@@ -115,7 +115,7 @@ static const client::HttpTransportLayerConfig* GetConfig() {
   return config_;
 }
 
-#ifndef _MSC_VER
+#ifndef _WIN32
 
 static volatile sig_atomic_t server_is_ready_ = false;
 
@@ -216,7 +216,7 @@ void HttpTransportTestFixture::SetUpTestCase() {
     return;
   }
 
-#ifndef _MSC_VER
+#ifndef _WIN32
   StartServerWithForkAndSignals();
 #else
   StartWindowsServer();
@@ -243,7 +243,7 @@ void HttpTransportTestFixture::TearDownTestCase() {
   }
 
 
-#if _MSC_VER
+#if _WIN32
   CloseHandle(process_info_.hProcess);
   CloseHandle(process_info_.hThread);
 #endif

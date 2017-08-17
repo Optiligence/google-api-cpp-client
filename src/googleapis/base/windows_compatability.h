@@ -33,7 +33,7 @@
 //    the time epoch is seconds since 1/1/1970 (APIs will convert to windows
 //    epoch of 100 nanosecond units since 1/1/1601 as needed).
 //
-#if defined(_MSC_VER) && !defined(GOOGLEAPIS_BASE_WINDOWS_COMPATABILITY_H_)
+#if defined(_WIN32) && !defined(GOOGLEAPIS_BASE_WINDOWS_COMPATABILITY_H_)
 #define GOOGLEAPIS_BASE_WINDOWS_COMPATABILITY_H_
 
 #include <WinSock2.h>
@@ -89,4 +89,4 @@ string ToWindowsPath(const string& str);
 string FromWindowsPath(const string& str);
 
 }  // namespace googleapis
-#endif  // defined(_MSC_VER) && !defined(GOOGLEAPIS_BASE_WINDOWS_COMPATABILITY_H_)
+#endif  // defined(_WIN32) && !defined(GOOGLEAPIS_BASE_WINDOWS_COMPATABILITY_H_)

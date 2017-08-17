@@ -61,7 +61,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifndef _MSC_VER
+#ifndef _WIN32
 #include <strings.h>  // for strcasecmp, but msvc does not have this header
 #endif
 

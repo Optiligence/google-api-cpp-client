@@ -40,11 +40,11 @@ typedef signed char         schar;
 typedef signed char         int8;
 typedef short               int16;
 typedef int                 int32;
-#ifdef COMPILER_MSVC
+#ifdef _MSC_VER
 typedef __int64             int64;
 #else
 typedef long long           int64;
-#endif /* COMPILER_MSVC */
+#endif /* _MSC_VER */
 
 // NOTE: unsigned types are DANGEROUS in loops and other arithmetical
 // places.  Use the signed types unless your variable represents a bit
@@ -57,11 +57,11 @@ typedef long long           int64;
 typedef unsigned char      uint8;
 typedef unsigned short     uint16;
 typedef unsigned int       uint32;
-#ifdef COMPILER_MSVC
+#ifdef _MSC_VER
 typedef unsigned __int64   uint64;
 #else
 typedef unsigned long long uint64;
-#endif /* COMPILER_MSVC */
+#endif /* _MSC_VER */
 
 // A type to represent a Unicode code-point value. As of Unicode 4.0,
 // such values require up to 21 bits.
@@ -86,7 +86,7 @@ typedef unsigned long      uword_t;
 #undef GG_ULONGLONG
 #undef GG_LL_FORMAT
 
-#ifdef COMPILER_MSVC     /* if Visual C++ */
+#ifdef _MSC_VER     /* if Visual C++ */
 
 // VC++ long long suffixes
 #define GG_LONGLONG(x) x##I64
@@ -103,7 +103,7 @@ typedef unsigned long      uword_t;
 #define GG_LL_FORMAT "ll"  // As in "%lld". Note that "q" is poor form also.
 #define GG_LL_FORMAT_W L"ll"
 
-#endif  // COMPILER_MSVC
+#endif  // _MSC_VER
 
 
 static const uint8  kuint8max  = (( uint8) 0xFF);

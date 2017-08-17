@@ -156,7 +156,11 @@ util::Status JwtBuilder::MakeJwtUsingEvp(
 
   googleapis::util::Status status;
   std::unique_ptr<EVP_MD_CTX, void(*)(EVP_MD_CTX*)>
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
+                  ctx(EVP_MD_CTX_create(), &EVP_MD_CTX_destroy);
+#else
                   ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
+#endif//OPENSSL_VERSION_NUMBER
   EVP_SignInit(ctx.get(), EVP_sha256());
   EVP_SignUpdate(ctx.get(), data_to_sign.c_str(), data_to_sign.size());
 

@@ -147,7 +147,7 @@ CodeNamePair HttpCodeToPair(int http_status) {
 }
 
 CodeNamePair ErrnoCodeToPair(int errno_code) {
-#ifdef _MSC_VER
+#ifdef _WIN32
   char msg[128];
   strerror_s(msg, sizeof(msg), errno_code);
 #else

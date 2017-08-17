@@ -37,16 +37,21 @@ endif()
 find_package(Threads)
 find_package(gflags)
 
-if (MSVC)
+if (WIN32)
   option(gtest_force_shared_crt "Force Gmock to use standard compiler flags" ON)
-  ADD_DEFINITIONS(-DCOMPILER_MSVC -DNOMINMAX -DWIN32_LEAN_AND_MEAN /Zm1000 /J
+  ADD_DEFINITIONS(-DCOMPILER_MSVC -DNOMINMAX -DWIN32_LEAN_AND_MEAN
                   -D_WIN32_WINNT=0x0600
                   -D_UNICODE -DUNICODE
                   -DGFLAGS_DLL_DECL= -DGFLAGS_DLL_DEFINE_FLAG=
                   -D_VARIADIC_MAX=10 -DGLOG_NO_ABBREVIATED_SEVERITIES)
   set(GLOG_LIBRARY libglog)
   set(GFLAGS_LIBRARY libgflags)
-  set(CURL_LIBRARY libcurl_imp)
+  set(CURL_LIBRARY curl)
+  #ADD_DEFINITIONS(-DCURL_STATICLIB)
+  if (MSVC)
+    set(CURL_LIBRARY libcurl_imp)
+    add_definitions(/Zm1000 /J)
+  endif()
 else()
   set(GLOG_LIBRARY glog)
   set(GFLAGS_LIBRARY gflags)
