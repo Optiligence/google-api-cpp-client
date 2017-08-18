@@ -29,7 +29,7 @@ using std::ostream;
 #include <string>
 using std::string;
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include <tchar.h>
 #endif
 
@@ -44,7 +44,7 @@ using std::string;
 
 namespace {
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 // Windows gives us a file name by creating a file.
 // we want a directory so this is no good.
 // Fow now we'll just delete the temporary file and use its name.
@@ -104,7 +104,7 @@ using namespace googleapis;
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
 
-#ifdef _MSC_VER
+#ifdef _WIN32
   // Change glog fatal failure function to abort so DEATH tests will see
   // a failure. Otherwise the default handler used by glog does not result
   // in a failure exit in _DEBUG.

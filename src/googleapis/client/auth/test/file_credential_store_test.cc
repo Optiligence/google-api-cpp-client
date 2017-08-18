@@ -139,7 +139,7 @@ TEST_F(FileCredentialStoreFixture, TestCreateDir) {
   File::Delete(kRoot);
 }
 
-#ifndef _MSC_VER
+#ifndef _WIN32
 TEST_F(FileCredentialStoreFixture, TestInvalidDir) {
   const string kRoot = StrCat(GetTestingTempDir(), "/test_invalid_dir");
   const string kClientId = "test_client_id";
@@ -288,7 +288,7 @@ TEST_F(FileCredentialStoreFixture, TestStoreEncodedFile) {
 TEST_F(FileCredentialStoreFixture, TestHomeDir) {
   const char* kExtraPath;
   const string kRoot = StrCat(GetTestingTempDir(), "/home_test");
-#ifndef _MSC_VER
+#ifndef _WIN32
   ASSERT_EQ(0, setenv("HOME", kRoot.c_str(), true));
   kExtraPath = ".googleapis/credentials";
 #else

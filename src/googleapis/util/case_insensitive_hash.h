@@ -31,7 +31,7 @@
 #define UTIL_HASH_CASE_INSENSITIVE_HASH_H_
 
 #include <stddef.h>
-#ifndef _MSC_VER
+#ifndef _WIN32
 #include <strings.h>
 #endif
 

@@ -61,7 +61,7 @@ using std::string;
 
 namespace googleapis {
 
-#ifdef OS_WINDOWS
+#ifdef _WIN32
 #ifdef min  // windows.h defines this to something silly
 #undef min
 #endif
@@ -71,11 +71,11 @@ namespace googleapis {
 // Windows doesn't have a 'gmtime_r', but it has the similar 'gmtime_s'.
 // TODO(user): Probably belongs in //base:time_support.{cc|h}.
 static struct tm* PortableSafeGmtime(const time_t* timep, struct tm* result) {
-#ifdef OS_WINDOWS
+#ifdef _WIN32
   return gmtime_s(result, timep) == 0 ? result : NULL;
 #else
   return gmtime_r(timep, result);
-#endif  // OS_WINDOWS
+#endif  // _WIN32
 }
 
 char* strnstr(const char* haystack, const char* needle,

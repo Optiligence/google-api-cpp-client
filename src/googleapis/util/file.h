@@ -26,8 +26,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#if defined(_MSC_VER)
+#if defined(_WIN32)
 # include <io.h>
+/*
 # define S_IRUSR mode_t(_S_IREAD)
 # define S_IWUSR mode_t(_S_IWRITE)
 # define S_IXUSR mode_t(_S_IEXEC)
@@ -36,6 +37,7 @@
 # define S_IRWXO mode_t(0)
 # define S_ISDIR(mode) ((mode & _S_IFDIR) != 0)  // NOLINT
 # define S_ISREG(mode) ((mode & _S_IFREG) != 0)  // NOLINT
+*/
 # define S_ISLNK(mode) 0
 
 # define O_NONBLOCK 0  /* ignore */
