@@ -36,6 +36,7 @@ endif()
 
 find_package(Threads)
 find_package(gflags)
+find_package(glog REQUIRED)
 
 if (MSVC)
   option(gtest_force_shared_crt "Force Gmock to use standard compiler flags" ON)
@@ -44,11 +45,9 @@ if (MSVC)
                   -D_UNICODE -DUNICODE
                   -DGFLAGS_DLL_DECL= -DGFLAGS_DLL_DEFINE_FLAG=
                   -D_VARIADIC_MAX=10 -DGLOG_NO_ABBREVIATED_SEVERITIES)
-  set(GLOG_LIBRARY libglog)
   set(GFLAGS_LIBRARY libgflags)
   set(CURL_LIBRARY libcurl_imp)
 else()
-  set(GLOG_LIBRARY glog)
   set(GFLAGS_LIBRARY gflags)
   set(CURL_LIBRARY curl)
   set(CMAKE_STANDARD_LIBRARIES ${CMAKE_STANDARD_LIBRARIES} pthread)
@@ -65,7 +64,6 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
     ${CURL_INCLUDE_DIRS}
     ${GFLAGS_INCLUDE_DIRS}
-    ${GLOG_INCLUDE_DIRS}
     ${GTEST_INCLUDE_DIRS}
     ${JSONCPP_INCLUDE_DIRS}
     ${OTHER_INCLUDE_DIRS}

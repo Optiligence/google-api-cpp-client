@@ -17,6 +17,7 @@
  * @}
  */
 
+#include <iostream>
 #include <fstream>
 #include <memory>
 #include "gflags/gflags.h"
