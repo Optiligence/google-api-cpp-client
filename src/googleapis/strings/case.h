@@ -46,8 +46,8 @@
 #define GOOGLEAPIS_STRINGS_CASE_H_
 
 #include <string.h>
-#ifndef _MSC_VER
-#ifndef _MSC_VER
+#ifndef _WIN32
+#ifndef _WIN32
 #include <strings.h>
 #endif
 #else

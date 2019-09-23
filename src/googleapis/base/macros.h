@@ -157,7 +157,7 @@ char (&ArraySizeHelper(T (&array)[N]))[N];
 // That gcc wants both of these prototypes seems mysterious. VC, for
 // its part, can't decide which to use (another mystery). Matching of
 // template overloads: the final frontier.
-#ifndef COMPILER_MSVC
+#ifndef _MSC_VER
 template <typename T, size_t N>
 char (&ArraySizeHelper(const T (&array)[N]))[N];
 #endif
@@ -206,7 +206,7 @@ char (&ArraySizeHelper(const T (&array)[N]))[N];
 // - wan 2005-11-16
 //
 // Starting with Visual C++ 2005, WinNT.h includes ARRAYSIZE.
-#if !defined(COMPILER_MSVC)
+#if !defined(WIN32)
 #define ARRAYSIZE(a) \
   ((sizeof(a) / sizeof(*(a))) / \
    static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))

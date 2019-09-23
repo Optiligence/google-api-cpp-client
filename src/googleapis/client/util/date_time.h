@@ -22,7 +22,7 @@
 #define GOOGLEAPIS_UTIL_DATE_TIME_H_
 
 #include <time.h>
-#ifndef _MSC_VER
+#ifndef _WIN32
 #include <sys/time.h>
 #else
 #include <stdlib.h>
@@ -34,7 +34,7 @@ using std::string;
 #include "googleapis/base/integral_types.h"
 #include "googleapis/base/port.h"
 namespace googleapis {
-#ifdef _MSC_VER
+#ifdef _WIN32
 inline int localtime_r(const long* tv_secs, struct tm* out) {  // NOLINT
   time_t secs = *tv_secs;
   return _localtime64_s(out, &secs);

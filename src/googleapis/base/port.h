@@ -58,7 +58,7 @@
 #include <unistd.h>
 #elif defined(OS_CYGWIN) || defined(__ANDROID__)
 #include <malloc.h>         // for memalign()
-#elif defined(COMPILER_MSVC)
+#elif defined(_MSC_VER)
 #include <stdio.h>          // declare snprintf/vsnprintf before overriding
 #endif
 
@@ -72,8 +72,8 @@
 #endif
 
 // We support MSVC++ 12.0 and later.
-#if defined(_MSC_VER) && _MSC_VER < 1800
-#error "This package requires _MSC_VER of 1800 or higher"
+#if defined(_WIN32) && _MSC_VER < 1800
+//#error "This package requires _MSC_VER of 1800 or higher"
 #endif
 
 // We support Apple Xcode clang 4.2.1 (version 421.11.65) and later.
@@ -161,7 +161,7 @@ typedef unsigned long ulong;
 
 // The following guarantees declaration of the byte swap functions, and
 // defines __BYTE_ORDER for MSVC
-#ifdef COMPILER_MSVC
+#ifdef _MSC_VER
 #include <stdlib.h>  // NOLINT(build/include)
 #define __BYTE_ORDER __LITTLE_ENDIAN
 #define bswap_16(x) _byteswap_ushort(x)
@@ -235,7 +235,7 @@ static inline uint64 bswap_64(uint64 x) {
 // Some headers provide a macro for this (GCC's system.h), remove it so that we
 // can use our own.
 #undef PATH_SEPARATOR
-#if defined(OS_WINDOWS)
+#if defined(_WIN32)
 const char PATH_SEPARATOR = '\\';
 #else
 const char PATH_SEPARATOR = '/';
@@ -248,7 +248,7 @@ const char PATH_SEPARATOR = '/';
 #define O_BINARY 0
 #endif
 
-#ifdef COMPILER_MSVC
+#ifdef _MSC_VER
 // doesn't have uid_t
 typedef int uid_t;
 #endif
@@ -827,7 +827,7 @@ inline void aligned_free(void *aligned_memory) {
 #ifndef SWIG
 template<int alignment, int size> struct AlignType { };
 template<int size> struct AlignType<0, size> { typedef char result[size]; };
-#if defined(COMPILER_MSVC)
+#if defined(_MSC_VER)
 #define BASE_PORT_H_ALIGN_ATTRIBUTE(X) __declspec(align(X))
 #define BASE_PORT_H_ALIGN_OF(T) __alignof(T)
 #elif defined(COMPILER_GCC3)
@@ -894,7 +894,7 @@ struct AlignType { typedef char result[Size]; };
 #endif  // !HAVE_ATTRIBUTE_SECTION
 
 
-#ifdef COMPILER_MSVC     /* if Visual C++ */
+#ifdef _MSC_VER     /* if Visual C++ */
 
 // This compiler flag can be easily overlooked on MSVC.
 // _CHAR_UNSIGNED gets set with the /J flag.
@@ -990,7 +990,7 @@ BASE_PORT_MSVC_DLL_MACRO
 #define chdir  _chdir
 #define getcwd _getcwd
 #define putenv  _putenv
-#if _MSC_VER >= 1900  // Only needed for VS2015+
+#if _WIN32 >= 1900  // Only needed for VS2015+
 #define getpid _getpid
 #define timezone _timezone
 #define tzname _tzname
@@ -1103,15 +1103,15 @@ typedef short int16_t;
 
 // ----- END VC++ STUBS & FAKE DEFINITIONS ----------------------------------
 
-#endif  // COMPILER_MSVC
+#endif  // _MSC_VER
 
-#ifdef STL_MSVC  // not always the same as COMPILER_MSVC
+#ifdef STL_MSVC  // not always the same as _MSC_VER
 #include "googleapis/base/port_hash.inc"
 #else
 struct PortableHashBase { };
 #endif
 
-#if defined(OS_WINDOWS) || defined(OS_MACOSX) || defined(OS_IOS)
+#if defined(_WIN32) || defined(OS_MACOSX) || defined(OS_IOS)
 // gethostbyname() *is* thread-safe for Windows native threads. It is also
 // safe on Mac OS X and iOS, where it uses thread-local storage, even though the
 // manpages claim otherwise. For details, see
@@ -1138,7 +1138,7 @@ struct PortableHashBase { };
 #elif defined(__GNUC__) && defined(STLPORT)
 // A version of gcc with stlport.
 #define HASH_NAMESPACE std
-#elif defined(_MSC_VER)
+#elif defined(_WIN32)
 // MSVC.
 // http://msdn.microsoft.com/en-us/library/6x7w9f6z(v=vs.100).aspx
 #define HASH_NAMESPACE stdext
@@ -1164,7 +1164,7 @@ struct PortableHashBase { };
 
 // Our STL-like classes use __STD.
 #if defined(COMPILER_GCC3) || defined(OS_MACOSX) || defined(OS_IOS) || \
-    defined(COMPILER_MSVC)
+    defined(_MSC_VER)
 #define __STD std
 #endif
 
@@ -1452,10 +1452,10 @@ std::ostream& operator << (std::ostream& out, const pthread_t& thread_id);
 // defined according to the language version in effect thereafter.
 // Microsoft Visual Studio 14 (2015) sets __cplusplus==199711 despite
 // reasonably good C++11 support, so we set LANG_CXX for it and
-// newer versions (_MSC_VER >= 1900).  Stlport is used by many Android
+// newer versions (_WIN32 >= 1900).  Stlport is used by many Android
 // projects and does not have full C++11 STL support.
 #if (defined(__GXX_EXPERIMENTAL_CXX0X__) || __cplusplus >= 201103L || \
-     (defined(_MSC_VER) && _MSC_VER >= 1900)) &&                      \
+     (defined(_WIN32) && _WIN32 >= 1900)) &&                      \
     !defined(STLPORT)
 // Define this to 1 if the code is compiled in C++11 mode; leave it
 // undefined otherwise.  Do NOT define it to 0 -- that causes
@@ -1496,7 +1496,7 @@ enum { kPlatformUsesOPDSections = 0 };
 // Something else (perhaps libc++) may have provided its own definition of
 // static_assert.
 #ifndef static_assert
-#if LANG_CXX11 || __has_extension(cxx_static_assert) || defined(_MSC_VER)
+#if LANG_CXX11 || __has_extension(cxx_static_assert) || defined(_WIN32)
 // There's a native implementation of static_assert, no need to define our own.
 #elif __has_extension(c_static_assert)
 // C11's _Static_assert is available, and makes a great static_assert.

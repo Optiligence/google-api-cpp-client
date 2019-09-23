@@ -847,7 +847,7 @@ size_t u64tostr_base36(uint64 number, size_t buf_size, char* buffer) {
 
 bool safe_strtof(const char* str, float* value) {
   char* endptr;
-#ifdef _MSC_VER  // has no strtof()
+#ifdef _WIN32  // has no strtof()
   *value = strtod(str, &endptr);
 #else
   *value = strtof(str, &endptr);

@@ -21,7 +21,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <sys/types.h>
-#if defined(_MSC_VER)
+#if defined(_WIN32)
 #include <windows.h>
 #include "googleapis/base/windows_compatability.h"
 #else
@@ -35,7 +35,9 @@
 #endif
 #endif
 
+#include <array>
 #include <string>
+#include <vector>
 using std::string;
 
 #include "googleapis/client/util/program_path.h"
@@ -58,15 +60,17 @@ std::string GetCurrentProgramFilenamePath() {  // OSX version
   return std::string(buf);
 }
 
-#elif defined(_MSC_VER)
+#elif defined(_WIN32)
 
 std::string GetCurrentProgramFilenamePath() {  // Windows version
-  char* value = NULL;
-  if (_get_pgmptr(&value)) return "./";
-
+  std::array<TCHAR, MAX_PATH + 1> szFileName;
+  GetModuleFileName(NULL, szFileName.data(), szFileName.size());
+  auto len = WideCharToMultiByte(CP_UTF8, 0, szFileName.data(), -1, nullptr, 0, 0, 0); 
+  std::vector<char> s(len);
+  WideCharToMultiByte(CP_UTF8, 0, szFileName.data(), -1, s.data(), len, 0, 0); 
   // Convert windows path to unix style path so our public interface
   // is consistent, especially when we operate on paths.
-  return FromWindowsPath(value);
+  return FromWindowsPath(s.data());
 }
 
 #else

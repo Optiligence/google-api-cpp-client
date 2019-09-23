@@ -20,13 +20,14 @@
 
 #include "googleapis/config.h"
 
-#if !defined(_MSC_VER)
+#if !defined(_WIN32)
 #include <dirent.h>
 #else
 #include <windows.h>
 #include <direct.h>
 #include <shellapi.h>
 #include <tchar.h>
+#include <share.h> // _SH_DENYNO
 #endif
 #include <errno.h>
 #include <fcntl.h>
@@ -48,7 +49,7 @@ using std::string;
 
 namespace googleapis {
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 static const int kBinaryMode = O_BINARY;
 inline string ToNativePath(const string& path) {  return ToWindowsPath(path); }
 #else
@@ -56,7 +57,7 @@ static const int kBinaryMode = 0;
 inline const string& ToNativePath(const string& path) { return path; }
 #endif
 
-#if defined(_MSC_VER)
+#if defined(_WIN32)
 
 static int mkdir(const string& path, mode_t permissions) {
   string windows_path = ToNativePath(path);
@@ -87,7 +88,7 @@ static int open(const char* windows_path, int options) {
   return result;
 }
 
-#endif  // #if defined(_MSC_VER)
+#endif  // #if defined(_WIN32)
 
 #if defined(HAVE_FSTAT64)
 #define file_STAT64  stat64
@@ -102,7 +103,7 @@ static int open(const char* windows_path, int options) {
 static int ModeToOflags(const char* mode, bool* maybe_create) {
   if (!mode || !mode[0]) return -1;
 
-  int default_flags = O_NONBLOCK;
+  int default_flags = 0;//O_NONBLOCK;
   char code = *mode;
   bool plus = false;
   while (*++mode) {
@@ -185,7 +186,7 @@ bool File::DeleteDir(const string& path) {
 bool File::RecursivelyDeleteDir(const string& path) {
   std::vector<std::string> subdirs;
   std::vector<std::string> files;
-#ifdef _MSC_VER
+#ifdef _WIN32
   string windows_path = ToNativePath(googleapis::StrCat(path, "/*"));
   string dir_str;
   const TCHAR* dir = ToWindowsString(windows_path, &dir_str);
@@ -291,7 +292,7 @@ File* File::OpenWithOptions(
   if (maybe_create) {
     oflags |= O_CREAT;
   }
-#ifndef _MSC_VER
+#ifndef _WIN32
   fd = open(native_path.c_str(), oflags, options.permissions());
 #else
   _sopen_s(&fd, native_path.c_str(), oflags | O_CREAT, _SH_DENYNO,
@@ -329,7 +330,7 @@ util::Status File::Close(const file::Options&) {
 }
 
 util::Status File::Flush() {
-#ifdef _MSC_VER
+#ifdef _WIN32
   return googleapis::util::Status();
 #else
   do {

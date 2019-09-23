@@ -39,7 +39,7 @@ namespace googleapis {
 
 namespace {
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 // Helper function for parsing time string where strptime isnt available.
 // We're hardcoding the calls for what we expect to parse
 // Params:
@@ -154,7 +154,7 @@ DateTime::DateTime(const string& date) {
   struct tm utc;
   memset(&utc, 0, sizeof(utc));
 
-#ifndef _MSC_VER
+#ifndef _WIN32
   // strptime %z doesnt match 'Z' or HH:MM nor does it support
   // the fractional seconds that can appear in a RFC 3339 time
   // so we'll do the timezone part ourselves and just
@@ -252,7 +252,7 @@ Date::Date(const string& yyyymmdd) {
   struct tm local;
   memset(&local, 0, sizeof(local));
 
-#ifndef _MSC_VER
+#ifndef _WIN32
   // strptime %z doesnt match 'Z' or HH:MM nor does it support
   // the fractional seconds that can appear in a RFC 3339 time
   // so we'll do the timezone part ourselves and just
