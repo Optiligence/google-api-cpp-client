@@ -138,7 +138,7 @@ target_link_libraries(googleapis_oauth2 googleapis_http)
 target_link_libraries(googleapis_oauth2 googleapis_internal)
 target_link_libraries(googleapis_oauth2 jsoncpp)
 install(TARGETS googleapis_oauth2 DESTINATION ${GOOGLEAPIS_INSTALL_LIB_DIR})
-install(FILES auth/oauth2_authorization.h
+install(FILES auth/oauth2_authorization.h auth/oauth2_service_authorization.h
         DESTINATION ${GOOGLEAPIS_INSTALL_INCLUDE_DIR}/client/auth)
 
 if (HAVE_OPENSSL)
